@@ -42,8 +42,8 @@
   [n]
   (let [digits (digits n)
         rotator #(let [rotated (rotation %2 %1)]
-                   (if (less? rotated %1) (reduced (undigits %1)) rotated))]
-    (reduce rotator digits (range (count digits)))))
+                   (if (< (undigits rotated) (undigits %1)) (reduced %1) rotated))]
+    (undigits (reduce rotator digits (range (count digits))))))
 
 ;; (defn rotations
 ;;   ([s] (rotations 0 (list s) s))
