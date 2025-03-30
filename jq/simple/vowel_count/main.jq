@@ -1,0 +1,1 @@
+[match("[aeiouy]"; "ig")] | length
