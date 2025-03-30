@@ -1,7 +1,7 @@
 #! /bin/bash
 
 function main() {
-    jq -fsrj main.jq "data/$1" \
+    jq -fsr -L "../../lib" main.jq "data/$1" \
         >"data/$2"
     # tr '\n' ' ' |
     # sed 's/[[:space:]]*$//' \
@@ -15,19 +15,24 @@ function compare() {
     fi
 }
 
-while getopts :ot opt; do
+while getopts :cot opt; do
     case "$opt" in
+    c)
+        main "basic.txt" "check.txt"
+        compare "check.txt" "answer.txt"
+        ;;
     o)
         main "input.txt" "output.txt"
-        xclip -selection clipboard "data/output.txt"
+        # xclip -selection clipboard "data/output.txt"
+        ./clip.sh -o
         ;;
     t)
         main "input.txt" "test.txt"
         compare "test.txt" "output.txt"
         ;;
     ?)
-        main "basic.txt" "result.txt"
-        compare "result.txt" "answer.txt"
+        echo "Invalid option ${OPTARG}"
+        exit 1
         ;;
     esac
 done
