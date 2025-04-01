@@ -1,3 +1,8 @@
 include "array";
+include "io";
 
-reduce .[] as $i ([]; .[$i] +=1) | rest | map(. // 0) | join(" ")
+
+def lcg:
+    until(last == 0; last -= 1 | penultimate = (first * penultimate + second) % third);
+
+multiline_input(lcg | penultimate)

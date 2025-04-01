@@ -1,7 +1,7 @@
 #! /bin/bash
 
 function main() {
-    jq -fsr -L "../../lib" main.jq "data/$1" \
+    jq -fsrR -L "../../lib" main.jq "data/$1" \
         >"data/$2"
     # tr '\n' ' ' |
     # sed 's/[[:space:]]*$//' \
