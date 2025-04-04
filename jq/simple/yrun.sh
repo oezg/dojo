@@ -1,18 +1,14 @@
 #! /bin/bash
 
 function main() {
-    jq -fsrR -L "../../lib" main.jq "data/$1" \
-        >"data/$2"
+    jq -fsrR -L "../../lib" main.jq "data/$1" |
+        tee "data/$2"
 
     # filter per line and join with tr
     # jq -frR -L "../../lib" main.jq "data/$1" |
     #     tr '\n' ' ' |
-    #     sed 's/[[:space:]]*$//' \
-    #         >"data/$2"
-}
-
-function console() {
-    echo "$@" | jq -fR -L "../../lib" main.jq
+    #     sed 's/[[:space:]]*$//' |
+    #     tee "data/$2"
 }
 
 function compare() {
@@ -23,15 +19,19 @@ function compare() {
     fi
 }
 
-while getopts :cdf:ot opt; do
+while getopts :cd:ef:ot opt; do
     case "$opt" in
     c)
         main "basic.txt" "check.txt"
         compare "check.txt" "answer.txt"
         ;;
     d)
-        # Run the debug file with the provided arguments.
-        echo "${@:$OPTIND}" | jq -L "../../lib" -f debug.jq
+        # Run the debug.jq file with the provided arguments.
+        echo "${@:$OPTIND-1}" | jq -f -L "../../lib" debug.jq
+        ;;
+    e)
+        # Run the debug.jq file with the input.txt
+        jq -f -L "../../lib" debug.jq data/input.txt
         ;;
     f)
         # Run the function in the main given as the first argument
@@ -40,11 +40,11 @@ while getopts :cdf:ot opt; do
             head -n -1 |
             sed '$s/;$//' |
             sed 's/^[[:space:]]*//' >debug_"$OPTARG".jq
-        echo "${@:$OPTIND}" | jq -r -L "../../lib" -f "debug_$OPTARG.jq"
+        echo "${@:$OPTIND}" | jq -rf -L "../../lib" "debug_$OPTARG.jq"
         ;;
     o)
         main "input.txt" "output.txt"
-        ./clip.sh -o
+        ../zlip.sh -o
         ;;
     t)
         main "input.txt" "test.txt"
