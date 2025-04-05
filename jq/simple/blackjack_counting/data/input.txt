@@ -1,0 +1,21 @@
+7 4 5
+A K
+8 A
+3 A K K
+Q 6
+9 K
+A A 9
+T A
+6 3 J
+5 2 A
+A T
+Q T
+9 T
+4 J A A
+Q K
+A 8
+Q K
+9 A
+6 K
+T A
+J 3 Q

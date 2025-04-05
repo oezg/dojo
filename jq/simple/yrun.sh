@@ -1,14 +1,14 @@
 #! /bin/bash
 
 function main() {
-    jq -fsrR -L "../../lib" main.jq "data/$1" |
-        tee "data/$2"
+    # jq -fsrR -L "../../lib" main.jq "data/$1" |
+    #     tee "data/$2"
 
     # filter per line and join with tr
-    # jq -frR -L "../../lib" main.jq "data/$1" |
-    #     tr '\n' ' ' |
-    #     sed 's/[[:space:]]*$//' |
-    #     tee "data/$2"
+    jq -frR -L "../../lib" main.jq "data/$1" |
+        tr '\n' ' ' |
+        sed 's/[[:space:]]*$//' |
+        tee "data/$2"
 }
 
 function compare() {
@@ -19,8 +19,12 @@ function compare() {
     fi
 }
 
-while getopts :cd:ef:ot opt; do
+while getopts :bcd:ef:ot opt; do
     case "$opt" in
+    b)
+        jq -cfR -L "../../lib" main.jq data/input.txt
+        ;;
+
     c)
         main "basic.txt" "check.txt"
         compare "check.txt" "answer.txt"
@@ -31,7 +35,7 @@ while getopts :cd:ef:ot opt; do
         ;;
     e)
         # Run the debug.jq file with the input.txt
-        jq -f -L "../../lib" debug.jq data/input.txt
+        jq -cfR -L "../../lib" debug.jq data/input.txt
         ;;
     f)
         # Run the function in the main given as the first argument

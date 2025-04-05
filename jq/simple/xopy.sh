@@ -6,6 +6,6 @@ cp -r "$(pwd)" "$destination"
 
 truncate -s 0 "$destination"/data/*
 
-truncate -s 0 "$destination"/debug.jq
+echo '.' >"$destination"/debug.jq
 
 rm -f "$destination"/debug_*.jq
