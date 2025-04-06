@@ -1,28 +1,16 @@
 include "array";
 
 def blackjack:
-    if test("[2-9]") then
-        tonumber
-    elif test("[TJQK]") then
-        10
-    else
-        0
-    end;
+    try tonumber catch 10;
 
 
 
 
 split(" ")
 | partition(. == "A")
-| second |= reduce .[] as $item (0; . + ($item | blackjack))
+| second |= (map(blackjack) | add)
 | first |= length
-| if second > 21 then
-    "Bust"
-elif first == 0 then
-    second
-elif second > 10 then
-    first + second
-elif first + second + 10 > 21 then
+| if first == 0 or second > 10 or first + second + 10 > 21 then
     first + second
 else
     first + second + 10
