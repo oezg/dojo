@@ -22,7 +22,7 @@ function compare() {
 while getopts :bcd:ef:ot opt; do
     case "$opt" in
     b)
-        jq -cfR -L "../../lib" main.jq data/input.txt
+        jq -cfrs -L "../../lib" main.jq data/input.txt
         ;;
 
     c)
@@ -31,7 +31,7 @@ while getopts :bcd:ef:ot opt; do
         ;;
     d)
         # Run the debug.jq file with the provided arguments.
-        echo "${@:$OPTIND-1}" | jq -f -L "../../lib" debug.jq
+        echo "${@:$OPTIND-1}" | jq -cf -L "../../lib" debug.jq
         ;;
     e)
         # Run the debug.jq file with the input.txt
