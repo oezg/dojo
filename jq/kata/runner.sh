@@ -1,0 +1,1 @@
+jq -nf partsofalist.jq --arg s "$1"
